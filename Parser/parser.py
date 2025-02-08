@@ -87,10 +87,9 @@ def find_new_announcement():
     if new_item:
         for i in new_item:
             db.add_to_weapon_list(i)
-        return f'new item: {new_item}'
+        return new_item
 
     solded_item = set_db_list.difference(list_of_announcements)
     if solded_item:
         for i in solded_item:
             db.delete_from_weapon_list(i[0])
-        return f'item solded and need to remove: {solded_item}'
