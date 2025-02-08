@@ -7,8 +7,9 @@ db = Database()
 
 def get_links():
     """
-    Берём из базы все параметры поиска и собираем их в ссылки для запросов
-    :return: Список Url для поискового запроса
+    Берёт из базы все параметры поиска и собирает их в ссылки для запросов.
+    :return: Список URL для поисковых запросов.
+             Формат: [url1, url2, ...]
     """
     data = db.get_query()
     link_list = []
@@ -20,8 +21,9 @@ def get_links():
 
 def get_all_announcements():
     """
-    Отправляем запрос на сайт для получения списка всех объявлений
-    :return: список ['id объявления', 'ссылка на объявление']
+    Отправляет запрос на сайт для получения списка всех объявлений.
+    :return: Список, содержащий ID объявления и ссылку на объявление.
+             Формат: [['id1', 'url1'], ['id2', 'url2'], ...]
     """
     announcements = []
     data = get_links()
@@ -39,9 +41,11 @@ def get_all_announcements():
 
 def get_announcement(link):
     """
-    Принимает Url на страницу с товаром и обрабатывает информацию
-    :param link: Url страницы товара (str)
-    :return: Возвращает словарь {'name', 'city', 'price', 'full_description' 'photo'}
+    Принимает URL на страницу с товаром и обрабатывает информацию.
+    :param link: URL страницы товара (строка).
+    :return: Возвращает словарь с информацией о товаре.
+             Формат: {'name': 'название', 'city': 'город', 'price': 'цена',
+                      'full_description': 'полное описание', 'photo': ['url1', 'url2', ...]}
     """
     page = requests.get(link)
     soup = BeautifulSoup(page.text, 'html.parser').select_one('.main__content')
@@ -69,6 +73,11 @@ def get_announcement(link):
 
 
 def find_new_announcement():
+    """
+    Сравнивает текущие объявления с базой данных и находит новые или удаленные объявления.
+    :return: Сообщение о новых или удаленных объявлениях.
+             Формат: 'new item: {set_of_new_items}' или 'item solded and need to remove: {set_of_sold_items}'
+    """
     db_list = [tuple(item) for item in db.get_weapon_list()]
     list_of_announcements = [tuple(item) for item in get_all_announcements()]
     set_db_list = set(db_list)
