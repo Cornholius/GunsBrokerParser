@@ -15,7 +15,7 @@ class Database:
         with self.conn:
             cursor = self.conn.cursor()
             cursor.execute("INSERT INTO queries (query) VALUES (?)", (query,))
-            return 'Запрос добавлен'
+            return f'Запрос "{query}" добавлен'
 
     def get_query(self) -> list[str, ...]:
         """
@@ -28,14 +28,14 @@ class Database:
             result = [i[0] for i in query]
             return result
 
-    def delete_query(self, query_id) -> None:
+    def delete_query(self, query) -> None:
         """
-        Удаляет поисковый запрос из базы данных по его идентификатору.
-        :param query_id: str. Идентификатор поискового запроса для удаления.
+        Удаляет поисковый запрос из базы данных по его имени.
+        :param query: str. Идентификатор поискового запроса для удаления.
         """
         with self.conn:
             cursor = self.conn.cursor()
-            cursor.execute('DELETE FROM queries WHERE id = ?', (query_id,))
+            cursor.execute('DELETE FROM queries WHERE query = ?', (query,))
 
     def add_to_weapon_list(self, weapon) -> None:
         """
