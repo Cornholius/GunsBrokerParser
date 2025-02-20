@@ -47,7 +47,7 @@ def get_announcement(link):
              Формат: {'name': 'название', 'city': 'город', 'price': 'цена',
                       'full_description': 'полное описание', 'photo': ['url1', 'url2', ...]}
     """
-    page = requests.get(link)
+    page = requests.get(f'https://gunsbroker.ru{link}')
     soup = BeautifulSoup(page.text, 'html.parser').select_one('.main__content')
     name = soup.find('h1').get_text()
     city = soup.select_one('.page-product__header--location').find('span').get_text(strip=True)
